@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cocktail Finder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-pink-100 to-yellow-100 min-h-screen font-sans">
+
+<div class="max-w-3xl mx-auto py-12 px-6">
+    <h1 class="text-4xl font-bold text-center text-pink-600 mb-8">🍹 Cocktail Finder</h1>
+
+    <!-- Search Bar -->
+    <form method="get" class="flex items-center gap-2 mb-10">
+        <input type="text" name="query" value="{{ query }}"
+               placeholder="Enter cocktail name or ingredient"
+               class="flex-1 px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
+               required>
+        <button type="submit"
+                class="bg-pink-500 hover:bg-pink-600 text-white px-5 py-2 rounded-lg transition">
+            Search
+        </button>
+    </form>
+
+    <!-- Results -->
+    {% if results %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {% for drink in results %}
+                <a href="{% url 'detail' drink.idDrink %}" class="block bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition transform hover:-translate-y-1">
+                    <img src="{{ drink.strDrinkThumb }}" alt="{{ drink.strDrink }}"
+                         class="rounded-lg w-full h-48 object-cover mb-3">
+                    <h2 class="text-lg font-semibold text-gray-800">{{ drink.strDrink }}</h2>
+                    <p class="text-gray-600 text-sm mt-2">{{ drink.strInstructions|truncatewords:25 }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    {% elif query %}
+        <p class="text-center text-gray-500">No cocktails found for "{{ query }}".</p>
+    {% endif %}
+</div>
+
+</body>
+</html>
